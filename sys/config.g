@@ -109,7 +109,7 @@ M307 H1 A1035 C360.6 D5.5 S1.0 V0.0 B0                    ;PLA PID setting 210°
 ; Fans
 ; =====================================================================================================================
 ; The wiring diagram mentioned uses FAN0 connector for the Part Cooling fan, and HE1 for Hotend Cooling. 
-M950 F0 C"fan0" Q500                                      ; create fan 0 on pin fan0 and set its frequency
+M950 F0 C"fan0"                                           ; create fan 0 on pin fan0 and set its frequency
 M106 P0 S0 H-1 C"Part Cooling"                            ; set fan 0 value. Thermostatic control is turned off
 M950 F1 C"e1heat" T1                                      ; create extruder fan output (2.4) on e1heat and map it to sensor 1 (T1)
 M106 P1 R1 H1 T45 C"Hotend Cooling"                       ; thermostatically 45C controlled fan from T1 sensor
