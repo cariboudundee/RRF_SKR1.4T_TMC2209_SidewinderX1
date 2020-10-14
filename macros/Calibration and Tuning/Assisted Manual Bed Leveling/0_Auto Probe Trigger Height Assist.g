@@ -8,7 +8,7 @@ G29 S2			; Clear mesh bed compensation perameters
 ;
 M291 P"Preheating to bed to 60 and nozzle to 210 for accurate probing" R"Proceed?" S3
 T0			; Activate first tool
-M104 S210		; Set nozzle to 210 and release
+M104 S190		; Set nozzle to 210 and release
 M140 S60		; Set bed temp to 60 and release
 
 ; home all axis
@@ -21,7 +21,7 @@ M109 S210		; Set nozzle to 210 and wait
 ;
 M291 P"Nozzle will now move to center of bed to reset Z0 and calibrate probe" S3
 G90			; Absolute positioning
-G1 X150 Y150 F6000	; Move to bed center
+G1 X159 Y142 F6000	; Move to bed center
 G31 Z0				; Reset zprobe trigger height
 G92 Z5				; Reset z to 5 to allow jogging up to touch bed to nozzle
 
@@ -40,8 +40,8 @@ G92 Z0			; Set z = 0
 ; Move probe to center of bed and get probe trigger heights
 ;
 M291 P"Probe will now measure trigger height 10 times" R"ZProbe Trigger Height Calibration" S3
-;G1 Z1			; Drop bed for nozzle clearance
-;G1 X190 Y90 F4000 	; Move to bed center
+G1 Z10			; Drop bed for nozzle clearance
+G1 X159 Y142 F4000 	; Move to bed center
 
 M291 P"Heights will be found in gcode console if logging is enabled" R"Did you remember to enabled gcode logging?" S3
 
