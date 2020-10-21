@@ -34,11 +34,11 @@ M569 P4 S1 D3 V40 T4 Y1:2                                 ; physical drive 4 goe
 M584 X0 Y1 Z2:4 E3                                        ; set drive mapping
 M350 X16 Y16 Z16 E16 I1                                   ; configure microstepping with interpolation
 M92 X80 Y80 Z400 E416.54                                  ; set steps per mm
-M566 X500 Y500 Z60 E1000 P1                               ; set maximum instantaneous speed changes (mm/min)
-M203 X15000 Y15000 Z1800 E6000                            ; set maximum speeds (mm/min)
-M201 X3000 Y3000 Z200 E10000                              ; set accelerations (mm/s^2)
-M204 P600 T2000						                      ; Set accelerations (mm/s^2) for print and travel moves
-M906 X1100 Y1100 Z1100 E800 I50                           ; set motor currents (mA) and motor idle factor in per cent
+M566 X500 Y400 Z50 E1000 P1                               ; set maximum instantaneous speed changes (mm/min)
+M203 X18000 Y18000 Z1200 E8000                            ; set maximum speeds (mm/min)
+M201 X2500 Y2000 Z180 E3500                               ; set accelerations (mm/s^2)
+M204 P600 T1600						                      ; Set accelerations (mm/s^2) for print and travel moves
+M906 X1600 Y1600 Z1600 E800 I50                           ; set motor currents (mA) and motor idle factor in per cent
 M84 S30                                                   ; Set idle timeout
 
 ; =====================================================================================================================
@@ -53,8 +53,8 @@ M208 X0:310 Y0:310 Z0:380                                 ; set axis limits
 ; =====================================================================================================================
 ; Endstops
 ; ========
-M574 X1 S3                                                ; configure active-high endstop for high end on X via pin e0stop
-M574 Y1 S3                                                ; configure active-high endstop for high end on Y via pin e1stop
+M574 X1 S3                                                ; configure sensorless endstop for high end on X
+M574 Y1 S3                                                ; configure sensorless endstop for high end on Y
 M574 Z1 S2                                                ; configure Zstop as IR height sensor
  
 ; =====================================================================================================================
@@ -64,24 +64,24 @@ M950 J0 C"e0stop"
 M950 J1 C"e1stop"
 M581 T2 P0 S1 R0                                          ; Runs trigger2.g file when pressed - Resets Load Macros
 M581 T6 P0 S1 R1                                          ; Runs trigger6.g file when pressed during print - Resumes print after resetting load macros
-M581 T3 P1 S1 R1                                          ;Runs trigger3.g file when pressed during print - Runs before Trigger 7 to get temp back up during print
+M581 T3 P1 S1 R1                                          ; Runs trigger3.g file when pressed during print - Runs before Trigger 7 to get temp back up during print
 M581 T7 P1 S1 R0                                          ; Runs trigger7.g file when pressed - First step of Unload process
  
 ; =====================================================================================================================
 ; Filament Sensor
 ; ===============
-;M591 D0 P1 C"pwrdet" S1                                  ; filament monitor connected to power detector
+M591 D0 P1 C"pwrdet" S1                                  ; filament monitor connected to power detector
 
 ; =====================================================================================================================
 ; Z-Probe (IR height detector)
 ; =====================================================================================================================
-M558 P1 C"e1temp" H5 A2 S0.5 F400 T7000                   ; disable Z probe but set dive height, probe speed and travel speed
-G31 P500 X-30 Y5 Z1  			       		              ; Probe Offset (1.62)
+M558 P1 C"e1temp" H5 A2 S0.5 F300 T6000                   ; disable Z probe but set dive height, probe speed and travel speed
+G31 P500 X-30 Y5 Z0.77  			       		          ; Probe Offset (0.77)
 
 ; =====================================================================================================================
 ; Mesh Compenstion
 ; =====================================================================================================================
-M557 X10:280 Y10:300 P5                                   ; define mesh grid
+M557 X10:280 Y10:300 P4                                   ; define mesh grid
 M376 H10                                                  ; fade over 10mm
 
 ; =====================================================================================================================
@@ -92,12 +92,12 @@ M308 S0 P"bedtemp" Y"thermistor" T100000 B4092 A"Lit"     ; configure sensor 0 a
 M950 H0 C"bed" T0                              			  ; create bed heater output on bed and map it to sensor 0
 M307 H0 B0 S1.00                               			  ; disable bang-bang mode for the bed heater and set PWM limit
 M140 H0                                        			  ; map heated bed to heater 0
-M143 H0 S110                                   			  ; set temperature limit for heater 0 to 110°C
+M143 H0 S130                                   			  ; set temperature limit for heater 0 to 130°C
 ; Hotend
 M308 S1 P"e0temp" Y"thermistor" T100000 B4092 A"Tête" 	  ; configure sensor 1 as thermistor on pin e0temp
 M950 H1 C"e0heat" T1                           			  ; create nozzle heater output on e0heat and map it to sensor 1
 M307 H1 B0 S1.00                               			  ; disable bang-bang mode for heater  and set PWM limit
-M143 H1 S270                                   			  ; set temperature limit for heater 1 to 240°C
+M143 H1 S270                                   			  ; set temperature limit for heater 1 to 270°C
 
 ; =====================================================================================================================
 ; Heater model parameters
@@ -109,9 +109,9 @@ M307 H1 A1035 C360.6 D5.5 S1.0 V0.0 B0                    ;PLA PID setting 210°
 ; Fans
 ; =====================================================================================================================
 ; The wiring diagram mentioned uses FAN0 connector for the Part Cooling fan, and HE1 for Hotend Cooling. 
-M950 F0 C"fan0"                                           ; create fan 0 on pin fan0 and set its frequency
+M950 F0 C"fan0" Q100                                      ; create fan 0 on pin fan0 and set its frequency
 M106 P0 S0 H-1 C"Part Cooling"                            ; set fan 0 value. Thermostatic control is turned off
-M950 F1 C"e1heat" T1                                      ; create extruder fan output (2.4) on e1heat and map it to sensor 1 (T1)
+M950 F1 C"e1heat" T1 Q100                                 ; create extruder fan output (2.4) on e1heat and map it to sensor 1 (T1)
 M106 P1 R1 H1 T45 C"Hotend Cooling"                       ; thermostatically 45C controlled fan from T1 sensor
 
 ; =====================================================================================================================
@@ -124,12 +124,12 @@ G10 P0 R0 S0                                              ; set initial tool 0 a
 ; =====================================================================================================================
 ; Pressure Advance
 ; =====================================================================================================================
-M572 D0 S0.10						
+M572 D0 S0.12						
 
 ; =====================================================================================================================
 ; Retraction
 ; =====================================================================================================================
-M207 S2.5 R0.0 F4800 T4800 Z0.6 
+M207 S1.5 R0.0 F2100 T2100 Z0.4 
 
 	; M207: Set retract length
 	; Parameters
@@ -163,5 +163,5 @@ T0                                                        ; select first tool
 ; =====================================================================================================================
 ; Startup Tune
 ; =====================================================================================================================
-G4 S10
-M98 P"0:/macros/Musical Tunes/Startup.g"
+;G4 S10
+;M98 P"0:/macros/Musical Tunes/Startup.g"

@@ -1,5 +1,5 @@
 ; =====================================================================================================================
 ;; Execute Purge macro
 ; =====================================================================================================================
-M300 S100 P1000              ;Play sound for Confirmation of button press
-M98 P/macros/purge.g         ;Call purge Macro
+M300 S100 P100               ;Play sound for Confirmation of button press
+M98 P"purge.g"               ;Call purge Macro
