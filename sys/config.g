@@ -33,11 +33,11 @@ M569 P3 S0 T4 Y1:2 						                  ; physical drive 3 goes forwards usin
 M569 P4 S1 D3 V40 T4 Y1:2                                 ; physical drive 4 goes forwards using default driver timings
 M584 X0 Y1 Z2:4 E3                                        ; set drive mapping
 M350 X16 Y16 Z16 E16 I1                                   ; configure microstepping with interpolation
-M92 X80 Y80 Z400 E416.54                                  ; set steps per mm
-M566 X500 Y400 Z50 E1000 P1                               ; set maximum instantaneous speed changes (mm/min)
-M203 X18000 Y18000 Z1200 E8000                            ; set maximum speeds (mm/min)
-M201 X2500 Y2000 Z180 E3500                               ; set accelerations (mm/s^2)
-M204 P600 T1600						                      ; Set accelerations (mm/s^2) for print and travel moves
+M92 X80.121 Y80.121 Z399.78 E416.54                       ; set steps per mm
+M566 X480 Y480 Z18 E300 P1                                ; set maximum instantaneous speed changes (mm/min)
+M203 X18000 Y18000 Z3000 E2400                            ; set maximum speeds (mm/min)
+M201 X2000 Y2000 Z100 E5000                               ; set accelerations (mm/s^2)
+M204 P800 T2000						                      ; Set accelerations (mm/s^2) for print and travel moves
 M906 X1600 Y1600 Z1600 E800 I50                           ; set motor currents (mA) and motor idle factor in per cent
 M84 S30                                                   ; Set idle timeout
 
@@ -70,7 +70,7 @@ M581 T7 P1 S1 R0                                          ; Runs trigger7.g file
 ; =====================================================================================================================
 ; Filament Sensor
 ; ===============
-M591 D0 P1 C"pwrdet" S1                                  ; filament monitor connected to power detector
+M591 D0 P1 C"pwrdet" S1                                   ; filament monitor connected to power detector
 
 ; =====================================================================================================================
 ; Z-Probe (IR height detector)
@@ -88,16 +88,16 @@ M376 H10                                                  ; fade over 10mm
 ; Heaters
 ; =====================================================================================================================
 ; Heatbed
-M308 S0 P"bedtemp" Y"thermistor" T100000 B4092 A"Lit"     ; configure sensor 0 as thermistor on pin bedtemp
-M950 H0 C"bed" T0                              			  ; create bed heater output on bed and map it to sensor 0
-M307 H0 B0 S1.00                               			  ; disable bang-bang mode for the bed heater and set PWM limit
-M140 H0                                        			  ; map heated bed to heater 0
-M143 H0 S130                                   			  ; set temperature limit for heater 0 to 130°C
+M308 S0 P"bedtemp" Y"thermistor" T100000 B4092 A"Lit"       ; configure sensor 0 as thermistor on pin bedtemp
+M950 H0 C"bed" T0                              			    ; create bed heater output on bed and map it to sensor 0
+M307 H0 B0 S1.00                               			    ; disable bang-bang mode for the bed heater and set PWM limit
+M140 H0                                        			    ; map heated bed to heater 0
+M143 H0 S150                                   			    ; set temperature limit for heater 0 to 150°C
 ; Hotend
-M308 S1 P"e0temp" Y"thermistor" T100000 B4092 A"Tête" 	  ; configure sensor 1 as thermistor on pin e0temp
-M950 H1 C"e0heat" T1                           			  ; create nozzle heater output on e0heat and map it to sensor 1
-M307 H1 B0 S1.00                               			  ; disable bang-bang mode for heater  and set PWM limit
-M143 H1 S270                                   			  ; set temperature limit for heater 1 to 270°C
+M308 S1 P"e0temp" Y"thermistor" T100000 B4092 A"Tête"       ; configure sensor 1 as thermistor on pin e0temp
+M950 H1 C"e0heat" T1                           			    ; create nozzle heater output on e0heat and map it to sensor 1
+M307 H1 B0 S1.00                               			    ; disable bang-bang mode for heater  and set PWM limit
+M143 H1 S275                                   			    ; set temperature limit for heater 1 to 275°C
 
 ; =====================================================================================================================
 ; Heater model parameters
